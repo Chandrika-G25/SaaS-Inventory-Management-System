@@ -1,5 +1,6 @@
-const BASE = "/api";
-
+const BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://saas-inventory-management-system-y19p.onrender.com/api";
 
 async function request(path, { method = "GET", body, token } = {}) {
   const res = await fetch(`${BASE}${path}`, {
