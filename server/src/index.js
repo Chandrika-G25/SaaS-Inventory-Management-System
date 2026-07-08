@@ -6,7 +6,7 @@ const path = require("path");
 const authRoutes = require("./routes/auth.routes");
 const productRoutes = require("./routes/products.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
-const settingsRoutes = require("./routes/settings");
+const settingsRoutes = require("./routes/settings.routes");
 
 const app = express();
 
