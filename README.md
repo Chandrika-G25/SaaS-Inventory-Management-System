@@ -70,7 +70,7 @@ npm start                                    # serves API + built frontend on th
 ## API Endpoints
 
 | Method | Path | Auth | Description |
-|---|---|---|---|
+|--------|------|------|-------------|
 | POST | /api/auth/signup | – | Create user + organization |
 | POST | /api/auth/login | – | Log in, get JWT |
 | GET | /api/products | ✓ | List org's products |

@@ -15,7 +15,11 @@ async function request(path, { method = "GET", body, token } = {}) {
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    throw new Error(data.error || "Request failed");
+    throw new Error(data.message || data.error || "Request failed");
+  }
+
+  if (data && typeof data === "object" && data.success !== undefined && data.data !== undefined) {
+    return data.data;
   }
   return data;
 }
@@ -28,6 +32,8 @@ export const api = {
   createProduct: (token, payload) => request("/products", { method: "POST", body: payload, token }),
   updateProduct: (token, id, payload) =>
     request(`/products/${id}`, { method: "PUT", body: payload, token }),
+  adjustProductStock: (token, id, payload) =>
+    request(`/products/${id}/adjust`, { method: "PATCH", body: payload, token }),
   deleteProduct: (token, id) => request(`/products/${id}`, { method: "DELETE", token }),
 
   getDashboard: (token) => request("/dashboard", { token }),

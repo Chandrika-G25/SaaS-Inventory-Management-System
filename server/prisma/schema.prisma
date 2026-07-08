@@ -40,6 +40,8 @@ model Product {
   costPrice         Float?
   sellingPrice      Float?
   lowStockThreshold Int?
+  lastUpdatedBy     String?      @db.Uuid
+  lastUpdateNote    String?
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
 

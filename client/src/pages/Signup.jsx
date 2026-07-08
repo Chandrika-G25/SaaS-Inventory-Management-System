@@ -22,7 +22,7 @@ export default function Signup() {
     }
 
     try {
-      const data = await api.signup({ email, password, organizationName });
+      const data = await api.signup({ email, password, confirmPassword, organizationName });
       login(data.token, data.organization);
       navigate("/");
     } catch (err) {
