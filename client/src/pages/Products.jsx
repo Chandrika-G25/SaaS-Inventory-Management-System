@@ -256,7 +256,7 @@ export default function Products() {
         <div className="bg-red-50 border border-red-200 text-red-750 text-xs font-semibold rounded-xl px-4 py-3 animate-fade-in">
           {error}
         </div>
-      )}     )}
+      )}
 
       {/* Table */}
       <div className="bg-white border border-slate-200/80 rounded-2xl shadow-premium overflow-hidden">

@@ -9,6 +9,7 @@ async function getAll(req, res) {
       data: products,
     });
   } catch (error) {
+    console.error("GetAll error:", error);
     const status = error.status || 500;
     return res.status(status).json({
       success: false,
@@ -26,6 +27,7 @@ async function getById(req, res) {
       data: product,
     });
   } catch (error) {
+    console.error("GetById error:", error);
     const status = error.status || 500;
     return res.status(status).json({
       success: false,
@@ -43,6 +45,7 @@ async function create(req, res) {
       data: product,
     });
   } catch (error) {
+    console.error("Create product error:", error);
     const status = error.status || 500;
     return res.status(status).json({
       success: false,
@@ -64,6 +67,7 @@ async function update(req, res) {
       data: product,
     });
   } catch (error) {
+    console.error("Update product error:", error);
     const status = error.status || 500;
     return res.status(status).json({
       success: false,
@@ -81,6 +85,7 @@ async function remove(req, res) {
       data: null,
     });
   } catch (error) {
+    console.error("Delete product error:", error);
     if (error.status) return res.status(error.status).json({ success: false, message: error.message });
     res.status(500).json({ success: false, message: "Internal server error." });
   }
@@ -96,6 +101,7 @@ async function adjustStock(req, res) {
     );
     res.json({ success: true, message: "Stock adjusted successfully.", data: updated });
   } catch (error) {
+    console.error("Adjust stock error:", error);
     if (error.status) return res.status(error.status).json({ success: false, message: error.message });
     res.status(500).json({ success: false, message: "Internal server error." });
   }

@@ -9,6 +9,7 @@ async function signup(req, res) {
       data: result,
     });
   } catch (error) {
+    console.error("Signup error:", error);
     const status = error.status || 500;
     return res.status(status).json({
       success: false,
@@ -26,6 +27,7 @@ async function login(req, res) {
       data: result,
     });
   } catch (error) {
+    console.error("Login error:", error);
     const status = error.status || 500;
     return res.status(status).json({
       success: false,
@@ -43,6 +45,7 @@ async function me(req, res) {
       data: result,
     });
   } catch (error) {
+    console.error("GetCurrentUser error:", error);
     const status = error.status || 500;
     return res.status(status).json({
       success: false,
