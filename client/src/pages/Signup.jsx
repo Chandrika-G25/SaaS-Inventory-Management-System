@@ -9,6 +9,7 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [organizationName, setOrganizationName] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -21,70 +22,114 @@ export default function Signup() {
       return;
     }
 
+    setLoading(true);
     try {
       const data = await api.signup({ email, password, confirmPassword, organizationName });
       login(data.token, data.organization);
       navigate("/");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="max-w-sm mx-auto mt-16 bg-white p-8 rounded-lg shadow-sm border">
-      <h1 className="text-xl font-semibold mb-6">Create your StockFlow account</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Organization name</label>
-          <input
-            required
-            value={organizationName}
-            onChange={(e) => setOrganizationName(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm"
-            placeholder="My Test Store"
-          />
+    <div className="min-h-[75vh] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white font-extrabold text-lg shadow-lg shadow-indigo-100 mb-4 animate-slide-up">
+          SF
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm"
-          />
+        <h2 className="text-3xl font-bold font-outfit text-slate-900 tracking-tight">
+          Create your account
+        </h2>
+        <p className="mt-1.5 text-sm text-slate-500">
+          Get started with StockFlow inventory management
+        </p>
+      </div>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 border border-slate-200/80 rounded-2xl shadow-premium sm:px-10">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
+                Organisation Name
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="My Store Ltd"
+                value={organizationName}
+                onChange={(e) => setOrganizationName(e.target.value)}
+                className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent placeholder:text-slate-350 transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
+                Email Address
+              </label>
+              <input
+                type="email"
+                required
+                placeholder="name@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent placeholder:text-slate-350 transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent placeholder:text-slate-350 transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent placeholder:text-slate-350 transition"
+              />
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-150 text-red-650 text-xs font-medium rounded-lg px-3 py-2 animate-fade-in">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl shadow-sm hover:shadow transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-65 mt-2"
+            >
+              {loading ? "Creating account…" : "Get Started"}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center text-xs">
+            <span className="text-slate-400">Already have an account? </span>
+            <Link to="/login" className="font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
+              Log in
+            </Link>
+          </div>
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Confirm password</label>
-          <input
-            type="password"
-            required
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm"
-          />
-        </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          type="submit"
-          className="w-full bg-slate-900 text-white rounded py-2 text-sm font-medium hover:bg-slate-800"
-        >
-          Sign up
-        </button>
-      </form>
-      <p className="text-sm text-slate-500 mt-4">
-        Already have an account? <Link to="/login" className="text-slate-900 underline">Log in</Link>
-      </p>
+      </div>
     </div>
   );
 }

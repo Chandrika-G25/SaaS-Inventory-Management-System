@@ -16,29 +16,29 @@ const emptyForm = {
 function Badge({ isLow, quantity, threshold }) {
   if (isLow) {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-        <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-100/50">
+        <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse-subtle" />
         Low ({quantity}/{threshold})
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
-      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-      OK
+    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100/50">
+      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+      Healthy
     </span>
   );
 }
 
 function Modal({ title, onClose, children }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md animate-fade-in">
-        <div className="flex items-center justify-between px-6 py-4 border-b">
-          <h2 className="text-base font-semibold text-slate-800">{title}</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-slate-100 overflow-hidden animate-slide-up">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200/60">
+          <h2 className="text-base font-bold font-outfit text-slate-800">{title}</h2>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-700 transition-colors text-xl leading-none"
+            className="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-all text-lg"
           >
             ×
           </button>
@@ -206,33 +206,40 @@ export default function Products() {
     const t = p.lowStockThreshold ?? 5;
     return p.quantity <= t;
   }).length;
-
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Products</h1>
-          <p className="text-sm text-slate-500 mt-0.5">
-            {totalProducts} total &nbsp;·&nbsp;
-            <span className={lowStockCount > 0 ? "text-red-600 font-medium" : "text-slate-400"}>
-              {lowStockCount} low stock
-            </span>
+          <span className="text-xs font-semibold text-indigo-600 uppercase tracking-widest block mb-0.5">Inventory</span>
+          <h1 className="text-3xl font-bold font-outfit text-slate-900">Products</h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Manage your stock items, tracked SKUs, and replenishment limits.
           </p>
         </div>
         <button
           id="add-product-btn"
           onClick={openCreate}
-          className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl shadow-sm transition-colors"
+          className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4.5 py-2.5 rounded-xl shadow-sm hover:shadow transition-all duration-200 hover:-translate-y-0.5"
         >
           <span className="text-lg leading-none">+</span>
           Add Product
         </button>
       </div>
 
+      {/* Info Stats Ribbon */}
+      <div className="flex items-center gap-4 bg-slate-50 border border-slate-200/60 rounded-xl px-4 py-2.5 text-xs text-slate-600">
+        <span className="font-semibold text-slate-800">Summary:</span>
+        <span>{totalProducts} products total</span>
+        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+        <span className={lowStockCount > 0 ? "text-red-650 font-bold" : "text-slate-500"}>
+          {lowStockCount} items currently running low
+        </span>
+      </div>
+
       {/* Search */}
       <div className="relative">
-        <span className="absolute inset-y-0 left-3 flex items-center text-slate-400 pointer-events-none">
+        <span className="absolute inset-y-0 left-3.5 flex items-center text-slate-400 pointer-events-none text-sm">
           🔍
         </span>
         <input
@@ -240,96 +247,111 @@ export default function Products() {
           placeholder="Search by name or SKU…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full border border-slate-200 rounded-xl pl-9 pr-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition placeholder:text-slate-300"
+          className="w-full border border-slate-200/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition shadow-premium placeholder:text-slate-350 bg-white"
         />
       </div>
 
       {/* Error banner */}
       {error && !showForm && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
+        <div className="bg-red-50 border border-red-200 text-red-750 text-xs font-semibold rounded-xl px-4 py-3 animate-fade-in">
           {error}
         </div>
-      )}
+      )}     )}
 
       {/* Table */}
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+      <div className="bg-white border border-slate-200/80 rounded-2xl shadow-premium overflow-hidden">
         {loading ? (
-          <div className="py-16 text-center text-slate-400 text-sm">Loading products…</div>
+          <div className="flex items-center gap-2 text-slate-400 text-sm py-16 justify-center">
+            <svg className="animate-spin h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+            </svg>
+            Loading product directory…
+          </div>
         ) : (
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-slate-50 text-slate-500 text-xs font-semibold uppercase tracking-wide border-b border-slate-200">
-                <th className="px-5 py-3 text-left">Name</th>
-                <th className="px-5 py-3 text-left">SKU</th>
-                <th className="px-5 py-3 text-center">Qty</th>
-                <th className="px-5 py-3 text-center">Stock Status</th>
-                <th className="px-5 py-3 text-right">Selling Price</th>
-                <th className="px-5 py-3" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {filtered.map((p) => {
-                const threshold = p.lowStockThreshold ?? 5;
-                const isLow = p.quantity <= threshold;
-                return (
-                  <tr
-                    key={p.id}
-                    className="hover:bg-slate-50 transition-colors group"
-                  >
-                    <td className="px-5 py-3 font-medium text-slate-800">{p.name}</td>
-                    <td className="px-5 py-3 font-mono text-slate-500 text-xs">{p.sku}</td>
-                    <td className="px-5 py-3 text-center tabular-nums text-slate-700">
-                      <div>{p.quantity}</div>
-                      {p.lastUpdateNote && (
-                        <div className="text-[10px] text-slate-400 mt-0.5 truncate max-w-[120px] mx-auto" title={p.lastUpdateNote}>
-                          Note: {p.lastUpdateNote}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead>
+                <tr className="bg-slate-50/70 text-slate-500 text-xs font-semibold uppercase tracking-wide border-b border-slate-200/60">
+                  <th className="px-6 py-3.5">Product Name</th>
+                  <th className="px-6 py-3.5">SKU</th>
+                  <th className="px-6 py-3.5 text-center">Qty on Hand</th>
+                  <th className="px-6 py-3.5 text-center">Stock Status</th>
+                  <th className="px-6 py-3.5 text-right">Selling Price</th>
+                  <th className="px-6 py-3.5 text-right pr-8">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100/80">
+                {filtered.map((p) => {
+                  const threshold = p.lowStockThreshold ?? 5;
+                  const isLow = p.quantity <= threshold;
+                  return (
+                    <tr
+                      key={p.id}
+                      className="hover:bg-slate-50/50 transition-colors group"
+                    >
+                      <td className="px-6 py-4 font-semibold text-slate-800">
+                        <div>{p.name}</div>
+                        {p.description && (
+                          <div className="text-xs text-slate-400 font-normal mt-0.5 max-w-[200px] truncate">
+                            {p.description}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 font-mono text-slate-500 text-xs">{p.sku}</td>
+                      <td className="px-6 py-4 text-center tabular-nums text-slate-700">
+                        <div className="font-semibold">{p.quantity}</div>
+                        {p.lastUpdateNote && (
+                          <div className="text-[10px] text-slate-400 mt-0.5 truncate max-w-[120px] mx-auto font-normal" title={p.lastUpdateNote}>
+                            💬 {p.lastUpdateNote}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <Badge isLow={isLow} quantity={p.quantity} threshold={threshold} />
+                      </td>
+                      <td className="px-6 py-4 text-right tabular-nums font-semibold text-slate-700">
+                        {p.sellingPrice != null ? `$${Number(p.sellingPrice).toFixed(2)}` : "—"}
+                      </td>
+                      <td className="px-6 py-4 text-right pr-8">
+                        <div className="flex items-center justify-end gap-3.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={() => openAdjust(p)}
+                            className="text-emerald-600 hover:text-emerald-800 text-xs font-bold transition-colors"
+                          >
+                            Adjust
+                          </button>
+                          <button
+                            id={`edit-${p.id}`}
+                            onClick={() => openEdit(p)}
+                            className="text-indigo-650 hover:text-indigo-850 text-xs font-bold transition-colors"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            id={`delete-${p.id}`}
+                            onClick={() => promptDelete(p)}
+                            className="text-red-500 hover:text-red-700 text-xs font-bold transition-colors"
+                          >
+                            Delete
+                          </button>
                         </div>
-                      )}
-                    </td>
-                    <td className="px-5 py-3 text-center">
-                      <Badge isLow={isLow} quantity={p.quantity} threshold={threshold} />
-                    </td>
-                    <td className="px-5 py-3 text-right tabular-nums text-slate-700">
-                      {p.sellingPrice != null ? `$${Number(p.sellingPrice).toFixed(2)}` : "—"}
-                    </td>
-                    <td className="px-5 py-3 text-right">
-                      <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => openAdjust(p)}
-                          className="text-emerald-600 hover:text-emerald-800 text-xs font-semibold transition-colors"
-                        >
-                          Adjust
-                        </button>
-                        <button
-                          id={`edit-${p.id}`}
-                          onClick={() => openEdit(p)}
-                          className="text-indigo-600 hover:text-indigo-800 text-xs font-semibold transition-colors"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          id={`delete-${p.id}`}
-                          onClick={() => promptDelete(p)}
-                          className="text-red-500 hover:text-red-700 text-xs font-semibold transition-colors"
-                        >
-                          Delete
-                        </button>
-                      </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {filtered.length === 0 && !loading && (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-14 text-center">
+                      <p className="text-slate-450 text-sm">
+                        {search ? "No products match your search query." : 'No products logged yet. Click "Add Product" to create your first stock item.'}
+                      </p>
                     </td>
                   </tr>
-                );
-              })}
-              {filtered.length === 0 && !loading && (
-                <tr>
-                  <td colSpan={6} className="px-5 py-14 text-center">
-                    <p className="text-slate-400 text-sm">
-                      {search ? "No products match your search." : 'No products yet. Click "Add Product" to get started.'}
-                    </p>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
